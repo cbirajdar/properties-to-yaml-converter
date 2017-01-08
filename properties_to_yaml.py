@@ -1,5 +1,6 @@
 import sys
-import yaml
+# import yaml
+import ruamel.yaml as yaml
 import collections
 from configobj import ConfigObj
 
@@ -22,7 +23,8 @@ def convert_properties_to_yaml():
 
     # Write resultant dictionary to the yaml file
     yaml_file = open(input_file + '.yaml', 'w')
-    yaml.dump(yaml_dict, yaml_file, default_flow_style=False)
+    # yaml.dump(yaml_dict, yaml_file, default_flow_style=False)
+    yaml.dump(yaml_dict, yaml_file, Dumper=yaml.RoundTripDumper)
 
 
 # Based on http://stackoverflow.com/a/3233356

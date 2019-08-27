@@ -26,14 +26,17 @@ def convert_properties_to_yaml():
 
 
 # Based on http://stackoverflow.com/a/3233356
-def update_dict(original_dict, updated_dict):
-    for k, v in updated_dict.items():
-        if isinstance(v, collections.Mapping):
-            r = update_dict(original_dict.get(k, {}), v)
-            original_dict[k] = r
+def update_dict(d, u):
+    try:
+        collectionsAbc = collections.abc
+    except:
+        collectionsAbc = collections
+    for k, v in six.iteritems(u):
+        dv = d.get(k, {})
+        if not isinstance(dv, collectionsAbc.Mapping):
+            d[k] = v
+        elif isinstance(v, collectionsAbc.Mapping):
+            d[k] = update_dict(dv, v)
         else:
-            original_dict[k] = updated_dict[k]
-    return original_dict
-
-
-convert_properties_to_yaml()
+            d[k] = v
+    return d
